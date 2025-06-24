@@ -79,16 +79,85 @@
     .btn-whatsapp {
         background-color: #25D366;
     }
+	
+	.loading-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+	}
+
+	.loader {
+		width: 100px;
+		height: 100px;
+	}
+
+	.loader-inner {
+		height: 100%;
+		width: 100%;
+		animation: rotate 2s linear infinite;
+	}
+
+	.loader-line-wrap {
+		position: absolute;
+		width: 100%;
+		height: 50px;
+		overflow: hidden;
+		transform-origin: 50% 100%;
+		animation: spin 4s linear infinite;
+	}
+
+	.loader-line-wrap:nth-child(1) { animation-delay: -0.8s; }
+	.loader-line-wrap:nth-child(2) { animation-delay: -0.6s; }
+	.loader-line-wrap:nth-child(3) { animation-delay: -0.4s; }
+	.loader-line-wrap:nth-child(4) { animation-delay: -0.2s; }
+	.loader-line-wrap:nth-child(5) { animation-delay: 0s; }
+
+	.loader-line {
+		height: 100%;
+		width: 100%;
+		background: linear-gradient(to right, #FF0000, #CC0000);
+		animation: colorChange 3s ease-in-out infinite;
+	}
+
+	.loading-text {
+		color: white;
+		text-align: center;
+		margin-top: 30px;
+		font-size: 18px;
+		max-width: 80%;
+	}
+
+	.funny-phrase {
+		font-style: italic;
+		margin-top: 15px;
+		color: #FF0000;
+		font-size: 16px;
+	}
+
+	@keyframes rotate {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+
+	@keyframes spin {
+		0%, 15% { transform: rotate(0); }
+		100% { transform: rotate(360deg); }
+	}
+
+	@keyframes colorChange {
+		0% { background: #FF0000; }
+		50% { background: #990000; }
+		100% { background: #FF0000; }
+	}
     
-    .loading {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: white;
-        font-size: 18px;
-        z-index: 1000;
-    }
     
     .preload {
         display: none;
@@ -96,7 +165,31 @@
 </style>
 </head>
 <body>
-    <div class="loading">Carregando...</div>
+    <div class="loading-container">
+    <div class="loader">
+        <div class="loader-inner">
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+            <div class="loader-line-wrap">
+                <div class="loader-line"></div>
+            </div>
+        </div>
+    </div>
+    <div class="loading-text">
+        <p>Preparando as placas mais iradas do universo...</p>
+        <p class="funny-phrase">"Paciência, jovem padawan! Vale a pena esperar!"</p>
+    </div>
+</div>
     
     <div class="slider-container">
         <div class="slider-track" id="slider-track">
@@ -116,7 +209,7 @@
     <script>
         // Lista de imagens
         const images = [
-            "https://i.ibb.co/LXn3WLdg/01.jpg",
+			"https://i.ibb.co/LXn3WLdg/01.jpg",
 			"https://i.ibb.co/fYPngKM9/02.jpg",
 			"https://i.ibb.co/hFryZtpj/03.jpg",
 			"https://i.ibb.co/VpzL8CmW/04.jpg",
@@ -245,11 +338,11 @@
             });
             
             // Esconder loading quando a primeira imagem carregar
-            const firstImage = document.querySelector('.slide img');
-            firstImage.onload = function() {
-                loading.style.display = 'none';
-                preloadNextImages();
-            };
+			const firstImage = document.querySelector('.slide img');
+			firstImage.onload = function() {
+				document.querySelector('.loading-container').style.display = 'none';  // ← NOVA LINHA
+				preloadNextImages();
+			};
 
 		// Garante que o link de voltar funciona
 		document.querySelector('a[href="https://otakucitybr.github.io/catalogo/"]').addEventListener('click', function(e) {
